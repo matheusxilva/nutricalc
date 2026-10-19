@@ -215,7 +215,7 @@
         <button onclick="openHistoryModal()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-blue-300 border border-slate-700 text-xs sm:text-sm font-medium transition flex items-center gap-2">
           <i class="fa-solid fa-chart-line text-blue-400"></i> Histórico
         </button>
-        <button onclick="openReportModal()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs sm:text-sm font-medium transition flex items-center gap-2">
+        <button onclick="open()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs sm:text-sm font-medium transition flex items-center gap-2">
           <i class="fa-solid fa-file-export text-rose-400"></i> Relatório
         </button>
         <button onclick="openProfileModal()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition" title="Configurações de Perfil">
@@ -1178,16 +1178,21 @@
         </div>
 
         <!-- Botões de Ação do Relatório -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1.5">
-          <button onclick="copyReportText()" class="py-3 px-3 bg-slate-800 hover:bg-slate-700 rounded-xl text-white font-bold text-xs sm:text-sm border border-slate-700 flex items-center justify-center gap-1.5 active:scale-95">
-            <i class="fa-regular fa-copy"></i> Texto Simples
-          </button>
-          <button onclick="generatePDFReport()" class="py-3 px-3 bg-purple-600 hover:bg-purple-500 rounded-xl text-white font-bold text-xs sm:text-sm shadow-lg shadow-purple-700/30 flex items-center justify-center gap-1.5 active:scale-95">
-            <i class="fa-solid fa-file-pdf"></i> Descarregar PDF
-          </button>
-          <button onclick="copyAIPromptReport()" class="py-3 px-3 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 rounded-xl text-white font-bold text-xs sm:text-sm shadow-lg shadow-emerald-700/30 flex items-center justify-center gap-1.5 active:scale-95">
-            <i class="fa-solid fa-robot"></i> Copiar para IA
-          </button>
+        <button onclick="salvarHistoricoNoApp()" class="py-3 px-3 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-white font-bold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-1.5 active:scale-95 col-span-2 sm:col-span-1">
+         <i class="fa-solid fa-floppy-disk"></i> Salvar Registro do Dia
+       </button>
+       <button onclick="openConsultarHistoricoModal()" class="py-3 px-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-bold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-1.5 active:scale-95">
+         <i class="fa-solid fa-clock-rotate-left"></i> Consultar Dias
+       </button>
+       <button onclick="copyAIPromptReport()" class="py-3 px-3 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 rounded-xl text-white font-bold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-1.5 active:scale-95">
+         <i class="fa-solid fa-robot"></i> Copiar para IA
+       </button>
+       <button onclick="copyReportText()" class="py-2.5 px-3 bg-slate-800 hover:bg-slate-700 rounded-xl text-white font-semibold text-xs border border-slate-700 flex items-center justify-center gap-1.5 active:scale-95">
+         <i class="fa-regular fa-copy"></i> Texto Simples
+       </button>
+       <button onclick="generatePDFReport()" class="py-2.5 px-3 bg-purple-600 hover:bg-purple-500 rounded-xl text-white font-semibold text-xs shadow-lg flex items-center justify-center gap-1.5 active:scale-95">
+         <i class="fa-solid fa-file-pdf"></i> PDF
+       </button>
         </div>
       </div>
 
@@ -1197,6 +1202,35 @@
     </div>
   </div>
 
+  <!-- MODAL DE CONSULTA DE DIAS ANTERIORES & ALIMENTOS -->
+  <div id="consultarDiasModal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 modal-backdrop hidden">
+    <div class="glass-card rounded-t-3xl sm:rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-slate-700 animate-fadeIn">
+      <div class="p-4 sm:p-5 border-b border-slate-700 flex items-center justify-between bg-slate-800/80 flex-shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-base font-bold">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-white">Histórico de Dias Salvos</h3>
+            <p class="text-[11px] text-slate-400">Consulte os totais e alimentos consumidos em cada data</p>
+          </div>
+        </div>
+        <button onclick="closeConsultarHistoricoModal()" class="text-slate-400 hover:text-white p-2.5 text-base rounded-xl">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div id="diasSalvosContainer" class="p-4 sm:p-5 overflow-y-auto space-y-3.5 flex-1">
+        <!-- Injetado dinamicamente via JS -->
+      </div>
+
+      <div class="p-4 border-t border-slate-700 bg-slate-800/50 text-right flex-shrink-0">
+        <button onclick="closeConsultarHistoricoModal()" class="px-5 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs sm:text-sm font-semibold">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
   <!-- 9. MODAL CUSTOMIZADO DE CONFIRMAÇÃO -->
   <div id="confirmModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
     <div class="glass-card rounded-2xl w-full max-w-sm p-5 space-y-4 shadow-2xl border border-slate-700 text-center animate-fadeIn">
@@ -3312,6 +3346,135 @@ ${historyText}
         </div>
       `;
       document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }
+    /* ==========================================================================
+       SISTEMA DE SALVAMENTO & CONSULTA DE DIAS E ALIMENTOS
+       ========================================================================== */
+    function salvarHistoricoNoApp() {
+      const goals = calculateMetabolicGoals();
+      const totals = calculateDailyTotals();
+      const cardioBurn = (currentDayState.cardioMinutes || 0) * 6.5;
+      const stepsBurn = (currentDayState.cardioSteps || 0) * 0.04;
+      const hevyKcal = currentDayState.hevyWorkout ? currentDayState.hevyWorkout.kcal : 0;
+      const totalExpenditure = Math.round(goals.tdee + cardioBurn + stepsBurn + hevyKcal);
+      const realDeficit = totalExpenditure - totals.kcal;
+
+      const record = {
+        date: currentDate,
+        weight: profileState.weight,
+        goals: goals,
+        totals: totals,
+        cardioMinutes: currentDayState.cardioMinutes || 0,
+        cardioSteps: currentDayState.cardioSteps || 0,
+        hevyKcal: hevyKcal,
+        totalExpenditure: totalExpenditure,
+        realDeficit: realDeficit,
+        fatGramsBurned: (realDeficit / 7.7).toFixed(1),
+        waterMl: currentDayState.waterMl || 0,
+        meals: JSON.parse(JSON.stringify(currentDayState.meals)),
+        savedAt: new Date().toISOString()
+      };
+
+      let savedHistory = [];
+      try {
+        const stored = localStorage.getItem(STORAGE_PREFIX + 'daily_saved_records');
+        savedHistory = stored ? JSON.parse(stored) : [];
+      } catch (e) { savedHistory = []; }
+
+      const existingIndex = savedHistory.findIndex(r => r.date === currentDate);
+      if (existingIndex >= 0) {
+        savedHistory[existingIndex] = record;
+      } else {
+        savedHistory.push(record);
+      }
+
+      savedHistory.sort((a, b) => new Date(b.date) - new Date(a.date));
+      localStorage.setItem(STORAGE_PREFIX + 'daily_saved_records', JSON.stringify(savedHistory));
+
+      if (db && currentUser) {
+        db.collection('users').doc(currentUser.uid).collection('saved_reports').doc(currentDate)
+          .set(record, { merge: true })
+          .catch(e => console.warn(e));
+      }
+
+      showToast(`Registro e alimentos de ${currentDate} salvos com sucesso!`, 'success');
+    }
+
+    function openConsultarHistoricoModal() {
+      let savedHistory = [];
+      try {
+        const stored = localStorage.getItem(STORAGE_PREFIX + 'daily_saved_records');
+        savedHistory = stored ? JSON.parse(stored) : [];
+      } catch (e) { savedHistory = []; }
+
+      const container = document.getElementById('diasSalvosContainer');
+      container.innerHTML = '';
+
+      if (savedHistory.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-10 text-slate-500 text-xs sm:text-sm">
+            <i class="fa-solid fa-folder-open text-3xl mb-2 block text-slate-600"></i>
+            Nenhum dia salvo ainda. No final do dia, clique em "Salvar Registro do Dia" no relatório.
+          </div>
+        `;
+      } else {
+        savedHistory.forEach((rec) => {
+          const card = document.createElement('div');
+          card.className = 'p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3';
+          
+          let mealsHtml = '';
+          const mealNames = { breakfast: 'Café da Manhã', lunch: 'Almoço', snack: 'Lanche da Tarde', dinner: 'Jantar / Ceia' };
+          
+          for (const mKey in rec.meals) {
+            const items = rec.meals[mKey] || [];
+            if (items.length > 0) {
+              mealsHtml += `<div class="mt-2 text-xs"><b class="text-emerald-400 block mb-1">${mealNames[mKey] || mKey}:</b><ul class="list-disc list-inside space-y-0.5 text-slate-300">`;
+              items.forEach(it => {
+                const ik = Math.round(it.k * (it.g / 100));
+                mealsHtml += `<li>${it.n} (${it.g}g) - <span class="text-slate-400">${ik} kcal</span></li>`;
+              });
+              mealsHtml += `</ul></div>`;
+            }
+          }
+
+          card.innerHTML = `
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <div>
+                <span class="text-base font-extrabold text-white">${rec.date}</span>
+                <span class="text-xs text-slate-400 ml-2">Peso: ${rec.weight} kg</span>
+              </div>
+              <span class="text-xs font-bold ${rec.realDeficit >= 0 ? 'text-emerald-400' : 'text-rose-400'}">
+                ${rec.realDeficit >= 0 ? '-' + rec.realDeficit + ' kcal (Déficit)' : '+' + Math.abs(rec.realDeficit) + ' kcal (Superávit)'}
+              </span>
+            </div>
+
+            <div class="grid grid-cols-4 gap-1.5 text-center text-[10px] sm:text-xs py-2 bg-slate-800/40 rounded-xl">
+              <div><span class="text-slate-400 block">Consumo</span><b class="text-white">${rec.totals.kcal} kcal</b></div>
+              <div><span class="text-slate-400 block">Proteína</span><b class="text-blue-400">${rec.totals.p}g</b></div>
+              <div><span class="text-slate-400 block">Carbo</span><b class="text-amber-400">${rec.totals.c}g</b></div>
+              <div><span class="text-slate-400 block">Gordura</span><b class="text-rose-400">${rec.totals.f}g</b></div>
+            </div>
+
+            <div class="text-[11px] text-slate-400 flex justify-between px-1">
+              <span>Água: <b class="text-cyan-400">${rec.waterMl} ml</b></span>
+              <span>Passos: <b class="text-white">${rec.cardioSteps}</b></span>
+              <span>Gordura Queimada: <b class="text-amber-400">${rec.fatGramsBurned}g</b></span>
+            </div>
+
+            <details class="text-xs bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 cursor-pointer">
+              <summary class="font-bold text-slate-300 hover:text-white select-none">Ver Alimentos Consumidos (${rec.date})</summary>
+              ${mealsHtml || '<p class="text-slate-500 mt-2">Nenhum alimento registrado.</p>'}
+            </details>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      document.getElementById('consultarDiasModal').classList.remove('hidden');
+    }
+
+    function closeConsultarHistoricoModal() {
+      document.getElementById('consultarDiasModal').classList.add('hidden');
     }
   </script>
 </body>
