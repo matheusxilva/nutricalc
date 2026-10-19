@@ -444,14 +444,14 @@
         </div>
       </div>
 
-      <!-- Registo de Água -->
+      <!-- Registro de Água -->
       <div class="lg:col-span-5 glass-card rounded-2xl p-4 sm:p-6 flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between mb-2">
             <div>
               <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">Hidratação</span>
               <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-1.5">
-                <i class="fa-solid fa-droplet text-cyan-400"></i> Registo de Água
+                <i class="fa-solid fa-droplet text-cyan-400"></i> Registro de Água
               </h3>
             </div>
             <span id="waterProgressPct" class="text-xs font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-md border border-cyan-500/20">0%</span>
@@ -728,7 +728,7 @@
         <!-- Tabela com Histórico Antropométrico -->
         <div class="space-y-2.5">
           <div class="flex items-center justify-between">
-            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Histórico de Registos</h4>
+            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Histórico de Registros</h4>
             <button onclick="exportHistoryCSV()" class="text-xs text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1 p-1">
               <i class="fa-solid fa-file-csv"></i> Exportar CSV
             </button>
@@ -1113,7 +1113,7 @@
             <i class="fa-solid fa-file-export"></i> Fazer Backup Completo
           </h4>
           <p class="text-[11px] sm:text-xs text-slate-400">
-            Guarda todos os seus registos de diário, pesos e alimentos locais em formato JSON.
+            Guarda todos os seus registros de diário, pesos e alimentos locais em formato JSON.
           </p>
           <div class="grid grid-cols-2 gap-2.5 pt-1">
             <button onclick="copyBackupToClipboard()" class="py-2.5 px-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs sm:text-sm font-semibold border border-slate-700 flex items-center justify-center gap-1.5 active:scale-95 transition">
@@ -2098,7 +2098,7 @@
     }
 
     function resetWater() {
-      showConfirmModal('Zerar Água', 'Deseja realmente zerar o registo de água deste dia?', () => {
+      showConfirmModal('Zerar Água', 'Deseja realmente zerar o registro de água deste dia?', () => {
         currentDayState.waterMl = 0;
         saveDayData();
         showToast('Água zerada com sucesso.', 'info');
@@ -2491,21 +2491,21 @@
       }
 
       renderHistoryView();
-      showToast('Registo de evolução salvo com sucesso!', 'success');
+      showToast('Registro de evolução salvo com sucesso!', 'success');
     }
 
     function deleteHistoryEntry(date) {
-      showConfirmModal('Remover Medição', `Excluir o registo do dia ${date}?`, () => {
+      showConfirmModal('Remover Medição', `Excluir o registro do dia ${date}?`, () => {
         let records = getHistoryRecords();
         records = records.filter(r => r.date !== date);
         saveHistoryRecords(records);
         renderHistoryView();
-        showToast('Registo removido do histórico.', 'info');
+        showToast('Registro removido do histórico.', 'info');
       });
     }
 
     function clearAllHistory() {
-      showConfirmModal('Zerar Todo o Histórico', 'Deseja realmente apagar todos os registos de pesagem e medidas? Esta ação é irreversível.', () => {
+      showConfirmModal('Zerar Todo o Histórico', 'Deseja realmente apagar todos os registros de pesagem e medidas? Esta ação é irreversível.', () => {
         localStorage.removeItem(STORAGE_PREFIX + 'weight_history');
         renderHistoryView();
         showToast('Todo o histórico foi apagado.', 'info');
@@ -2520,7 +2520,7 @@
       renderWeightChart(records);
 
       if (records.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="9" class="p-4 text-center text-slate-500 text-xs">Nenhum registo no histórico. Salve sua primeira pesagem acima.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="p-4 text-center text-slate-500 text-xs">Nenhum registro no histórico. Salve sua primeira pesagem acima.</td></tr>';
         document.getElementById('histInitialWeight').textContent = '--';
         document.getElementById('histLowestWeight').textContent = '--';
         document.getElementById('histTotalDelta').textContent = '--';
@@ -2977,7 +2977,7 @@
 
       showConfirmModal(
         'Substituir Dados Atuais?',
-        'A restauração irá sobrescrever seus registos atuais com os dados do backup. Deseja prosseguir?',
+        'A restauração irá sobrescrever seus registros atuais com os dados do backup. Deseja prosseguir?',
         () => {
           Object.keys(dataset).forEach(key => {
             if (key.startsWith(STORAGE_PREFIX)) {
