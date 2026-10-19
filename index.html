@@ -1177,22 +1177,51 @@
           <div class="flex justify-between pt-1.5"><span class="text-slate-400 font-bold">Défice / Superávit Real:</span><span id="repDeficit" class="font-extrabold text-emerald-400">-</span></div>
         </div>
 
-        <!-- Botões de Ação do Relatório -->
-        <button onclick="salvarHistoricoNoApp()" class="py-3 px-3 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-white font-bold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-1.5 active:scale-95 col-span-2 sm:col-span-1">
-         <i class="fa-solid fa-floppy-disk"></i> Salvar Registro do Dia
-       </button>
-       <button onclick="openConsultarHistoricoModal()" class="py-3 px-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-bold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-1.5 active:scale-95">
-         <i class="fa-solid fa-clock-rotate-left"></i> Consultar Dias
-       </button>
-       <button onclick="copyAIPromptReport()" class="py-3 px-3 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 rounded-xl text-white font-bold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-1.5 active:scale-95">
-         <i class="fa-solid fa-robot"></i> Copiar para IA
-       </button>
-       <button onclick="copyReportText()" class="py-2.5 px-3 bg-slate-800 hover:bg-slate-700 rounded-xl text-white font-semibold text-xs border border-slate-700 flex items-center justify-center gap-1.5 active:scale-95">
-         <i class="fa-regular fa-copy"></i> Texto Simples
-       </button>
-       <button onclick="generatePDFReport()" class="py-2.5 px-3 bg-purple-600 hover:bg-purple-500 rounded-xl text-white font-semibold text-xs shadow-lg flex items-center justify-center gap-1.5 active:scale-95">
-         <i class="fa-solid fa-file-pdf"></i> PDF
-       </button>
+       <!-- MODAL DE RELATÓRIO & AVALIAÇÃO COM IA (CORRIGIDO E SEGURO) -->
+  <div id="reportModal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 modal-backdrop hidden">
+    <div class="glass-card rounded-t-3xl sm:rounded-2xl w-full max-w-lg max-h-[92vh] flex flex-col overflow-hidden shadow-2xl border border-slate-700">
+      
+      <div class="p-4 sm:p-5 border-b border-slate-700 flex items-center justify-between bg-slate-800/80">
+        <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-file-export text-rose-400"></i> Relatório & Avaliação com IA
+        </h3>
+        <button onclick="closeReportModal()" class="text-slate-400 hover:text-white p-2.5 text-base rounded-xl">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-5 space-y-4 text-xs sm:text-sm overflow-y-auto" id="reportContentToExport">
+        <div class="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-[11px] sm:text-xs">
+          Guarda o registo completo do dia, consulta dados anteriores ou copia para avaliação no ChatGPT/Gemini.
+        </div>
+
+        <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2 text-xs sm:text-sm">
+          <div class="flex justify-between border-b border-slate-800 pb-2"><span class="text-slate-400">Data:</span><span id="repDate" class="font-bold text-white">-</span></div>
+          <div class="flex justify-between border-b border-slate-800 pb-2"><span class="text-slate-400">Meta Calórica:</span><span id="repTargetKcal" class="font-bold text-white">-</span></div>
+          <div class="flex justify-between border-b border-slate-800 pb-2"><span class="text-slate-400">Total Consumido:</span><span id="repConsumedKcal" class="font-bold text-emerald-400">-</span></div>
+          <div class="flex justify-between border-b border-slate-800 pb-2"><span class="text-slate-400">Macronutrientes:</span><span id="repMacros" class="font-bold text-slate-200">-</span></div>
+          <div class="flex justify-between border-b border-slate-800 pb-2"><span class="text-slate-400">Água Total:</span><span id="repWater" class="font-bold text-cyan-400">-</span></div>
+          <div class="flex justify-between border-b border-slate-800 pb-2"><span class="text-slate-400">Gasto & Treino:</span><span id="repExercise" class="font-bold text-orange-400">-</span></div>
+          <div class="flex justify-between pt-1.5"><span class="text-slate-400 font-bold">Défice / Superávit Real:</span><span id="repDeficit" class="font-extrabold text-emerald-400">-</span></div>
+        </div>
+
+        <!-- Botões de Ação Atualizados -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-1.5">
+          <button onclick="salvarHistoricoNoApp()" class="py-3 px-3 bg-emerald-600 hover:bg-emerald-500 rounded-xl text-white font-bold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-1.5 active:scale-95 col-span-2 sm:col-span-1">
+            <i class="fa-solid fa-floppy-disk"></i> Salvar Registro
+          </button>
+          <button onclick="openConsultarHistoricoModal()" class="py-3 px-3 bg-blue-600 hover:bg-blue-500 rounded-xl text-white font-bold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-1.5 active:scale-95">
+            <i class="fa-solid fa-clock-rotate-left"></i> Consultar Dias
+          </button>
+          <button onclick="copyAIPromptReport()" class="py-3 px-3 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 rounded-xl text-white font-bold text-xs sm:text-sm shadow-lg flex items-center justify-center gap-1.5 active:scale-95">
+            <i class="fa-solid fa-robot"></i> Copiar para IA
+          </button>
+          <button onclick="copyReportText()" class="py-2.5 px-3 bg-slate-800 hover:bg-slate-700 rounded-xl text-white font-semibold text-xs border border-slate-700 flex items-center justify-center gap-1.5 active:scale-95">
+            <i class="fa-regular fa-copy"></i> Texto Simples
+          </button>
+          <button onclick="generatePDFReport()" class="py-2.5 px-3 bg-purple-600 hover:bg-purple-500 rounded-xl text-white font-semibold text-xs shadow-lg flex items-center justify-center gap-1.5 active:scale-95">
+            <i class="fa-solid fa-file-pdf"></i> PDF
+          </button>
         </div>
       </div>
 
@@ -3035,33 +3064,44 @@
        15. RELATÓRIOS & AVALIAÇÃO VIA IA
        ========================================================================== */
     function openReportModal() {
-      const goals = calculateMetabolicGoals();
-      const totals = calculateDailyTotals();
-      const cardioBurn = (currentDayState.cardioMinutes || 0) * 6.5;
-      const stepsBurn = (currentDayState.cardioSteps || 0) * 0.04;
-      const hevyKcal = currentDayState.hevyWorkout ? currentDayState.hevyWorkout.kcal : 0;
-      const totalExpenditure = Math.round(goals.tdee + cardioBurn + stepsBurn + hevyKcal);
-      const realDeficit = totalExpenditure - totals.kcal;
+      try {
+        const goals = calculateMetabolicGoals();
+        const totals = calculateDailyTotals();
+        const cardioBurn = (currentDayState.cardioMinutes || 0) * 6.5;
+        const stepsBurn = (currentDayState.cardioSteps || 0) * 0.04;
+        const hevyKcal = currentDayState.hevyWorkout ? currentDayState.hevyWorkout.kcal : 0;
+        const totalExpenditure = Math.round(goals.tdee + cardioBurn + stepsBurn + hevyKcal);
+        const realDeficit = totalExpenditure - totals.kcal;
 
-      document.getElementById('repDate').textContent = currentDate;
-      document.getElementById('repTargetKcal').textContent = `${goals.targetKcal} kcal (TDEE: ${goals.tdee} kcal)`;
-      document.getElementById('repConsumedKcal').textContent = `${totals.kcal} kcal`;
-      document.getElementById('repMacros').textContent = `P: ${totals.p}g | C: ${totals.c}g | G: ${totals.f}g | Fib: ${totals.fb}g`;
-      document.getElementById('repWater').textContent = `${currentDayState.waterMl || 0} ml`;
-      document.getElementById('repExercise').textContent = `Cardio: ${currentDayState.cardioMinutes || 0}m | Passos: ${currentDayState.cardioSteps || 0} | Treino: ${hevyKcal} kcal`;
-      
-      const repDefEl = document.getElementById('repDeficit');
-      if (realDeficit >= 0) {
-        repDefEl.textContent = `-${realDeficit} kcal (Défice | ~${(realDeficit / 7.7).toFixed(1)}g gordura)`;
-        repDefEl.className = 'font-extrabold text-emerald-400';
-      } else {
-        repDefEl.textContent = `+${Math.abs(realDeficit)} kcal (Superávit)`;
-        repDefEl.className = 'font-extrabold text-rose-400';
+        const setIfExists = (id, val) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = val;
+        };
+
+        setIfExists('repDate', currentDate);
+        setIfExists('repTargetKcal', `${goals.targetKcal} kcal (TDEE: ${goals.tdee} kcal)`);
+        setIfExists('repConsumedKcal', `${totals.kcal} kcal`);
+        setIfExists('repMacros', `P: ${totals.p}g | C: ${totals.c}g | G: ${totals.f}g | Fib: ${totals.fb}g`);
+        setIfExists('repWater', `${currentDayState.waterMl || 0} ml`);
+        setIfExists('repExercise', `Cardio: ${currentDayState.cardioMinutes || 0}m | Passos: ${currentDayState.cardioSteps || 0} | Treino: ${hevyKcal} kcal`);
+
+        const repDefEl = document.getElementById('repDeficit');
+        if (repDefEl) {
+          if (realDeficit >= 0) {
+            repDefEl.textContent = `-${realDeficit} kcal (Défice | ~${(realDeficit / 7.7).toFixed(1)}g gordura)`;
+            repDefEl.className = 'font-extrabold text-emerald-400';
+          } else {
+            repDefEl.textContent = `+${Math.abs(realDeficit)} kcal (Superávit)`;
+            repDefEl.className = 'font-extrabold text-rose-400';
+          }
+        }
+      } catch (err) {
+        console.warn("Aviso ao preencher dados do relatório:", err);
       }
 
-      document.getElementById('reportModal').classList.remove('hidden');
+      const modal = document.getElementById('reportModal');
+      if (modal) modal.classList.remove('hidden');
     }
-
     function closeReportModal() {
       document.getElementById('reportModal').classList.add('hidden');
     }
