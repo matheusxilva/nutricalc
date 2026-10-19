@@ -3240,6 +3240,79 @@ ${historyText}
         setTimeout(() => toast.remove(), 300);
       }, 3500);
     }
+    /* ==========================================================================
+       17. SISTEMA DE RELATÓRIO MENSAL AUTOMÁTICO (DISPARADO NO DIA 1)
+       ========================================================================== */
+    const originalInitAuthListener = window.initAuthListener || function(){};
+    
+    window.initAuthListener = function() {
+      if (typeof originalInitAuthListener === 'function') originalInitAuthListener();
+      setTimeout(checkMonthlyReportTrigger, 2000);
+    };
+
+    async function checkMonthlyReportTrigger() {
+      const today = new Date();
+      const dayOfMonth = today.getDate();
+      
+      // NOTA: Para testes imediatos, podes remover temporariamente o "if (dayOfMonth !== 1)" 
+      // para veres o modal a abrir já hoje!
+      if (dayOfMonth !== 1) return;
+
+      const currentMonthKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+      const lastCheckedMonth = localStorage.getItem(STORAGE_PREFIX + 'last_report_notified');
+
+      if (lastCheckedMonth === currentMonthKey) return;
+
+      const prevDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+      const prevMonthName = prevDate.toLocaleString('pt-BR', { month: 'long', year: 'numeric' });
+
+      const history = getHistoryRecords();
+      let pesoInicio = history.length > 0 ? history[0].weight : profileState.weight;
+      let pesoFim = profileState.weight;
+      let deltaPeso = (pesoFim - pesoInicio).toFixed(1);
+
+      showMonthlyReportModal(prevMonthName, deltaPeso, pesoInicio, pesoFim);
+      localStorage.setItem(STORAGE_PREFIX + 'last_report_notified', currentMonthKey);
+    }
+
+    function showMonthlyReportModal(mesNome, delta, pIni, pFim) {
+      const modalHtml = `
+        <div id="monthlyReportModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop">
+          <div class="glass-card rounded-2xl w-full max-w-lg p-5 sm:p-6 space-y-4 shadow-2xl border border-purple-500/40 text-center animate-fadeIn">
+            <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center mx-auto text-xl">
+              <i class="fa-solid fa-award"></i>
+            </div>
+            <div>
+              <span class="text-[10px] font-bold text-purple-400 uppercase tracking-wider bg-purple-500/10 px-2.5 py-0.5 rounded-full border border-purple-500/20">Fechamento Mensal</span>
+              <h3 class="text-lg font-bold text-white mt-1.5">Relatório de ${mesNome} Pronto!</h3>
+              <p class="text-xs text-slate-300 mt-1">Aqui está o balanço da tua evolução nutricional e corporal do mês passado.</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 text-xs text-left">
+              <div>
+                <span class="text-slate-400 block text-[10px]">Peso Inicial do Mês</span>
+                <b class="text-white text-sm">${pIni} kg</b>
+              </div>
+              <div>
+                <span class="text-slate-400 block text-[10px]">Peso Atual / Fim</span>
+                <b class="text-emerald-400 text-sm">${pFim} kg</b>
+              </div>
+              <div class="col-span-2 pt-2 border-t border-slate-800 flex justify-between items-center">
+                <span class="text-slate-300">Balanço Corporal:</span>
+                <b class="${delta <= 0 ? 'text-emerald-400' : 'text-rose-400'}">${delta <= 0 ? delta + ' kg eliminados 🎉' : '+' + delta + ' kg'}</b>
+              </div>
+            </div>
+
+            <p class="text-[11px] text-slate-400 italic">"A consistência supera a perfeição. Continua focado no plano de Cutting e a ajustar a hidratação!"</p>
+
+            <button onclick="document.getElementById('monthlyReportModal').remove()" class="w-full py-3 bg-purple-600 hover:bg-purple-500 rounded-xl text-white font-bold text-xs sm:text-sm shadow-lg shadow-purple-700/30 transition active:scale-95">
+              <i class="fa-solid fa-check"></i> Incrível, Fechar Relatório
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }
   </script>
 </body>
 </html>
